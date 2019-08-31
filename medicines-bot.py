@@ -14,6 +14,7 @@ headers = {
     "Content-Type": "text/json"
 }
 
+
 def get_types(token):
     url = "https://int.drugscreening.ru/v1/concepts/types?access_token={}".format(token)
 
@@ -86,13 +87,12 @@ def index():
     return 'waiting for the thunder!'
 
 
-def send_warning(contract_id, names):
+def send_warning(contract_id, text):
     data = {
         "contract_id": contract_id,
         "api_key": APP_KEY,
         "message": {
-            "text": "Внимание!\n\nСледующие лекарственные препараты могут быть противопоказаны для беременных: {}.".format(
-                ", ".join(names)),
+            "text": text,
             "is_urgent": True,
         }
     }
@@ -130,12 +130,10 @@ def save_message():
         if found:
             found_meds.append(found)
 
-    print(find_interaction(found_meds, element_token))
-    """
-        if warning:
-        delayed(1, send_warning, [contract_id, list(set())])
-    """
+    result = find_interaction(found_meds, element_token)
 
+    for data in result['Items']:
+        delayed(1, send_warning, [contract_id, data['PatientAlert']])
 
     return "ok"
 
