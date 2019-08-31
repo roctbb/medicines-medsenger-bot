@@ -131,8 +131,7 @@ def save_message():
             found_meds.append(found)
 
     result = find_interaction(found_meds, element_token)
-    print(result)
-    for data in result['Items']:
+    for data in result['DrugDrugInteractions']['Items']:
         delayed(1, send_warning, [contract_id, data['PatientAlert']])
 
     return "ok"
