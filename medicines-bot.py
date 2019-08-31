@@ -131,9 +131,11 @@ def save_message():
             found_meds.append(found)
 
     print(find_interaction(found_meds, element_token))
-
-    if warning:
+    """
+        if warning:
         delayed(1, send_warning, [contract_id, list(set())])
+    """
+
 
     return "ok"
 
